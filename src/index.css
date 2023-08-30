@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Common style */
+.my-btn-one{
+  width: 250px;
+  background: radial-gradient(black,goldenrod);
+  font-size: 26px;
+  color: white;
+  padding: 10px;
+  border-radius: 40px;
+  box-shadow: 0 0 5px black;
+}
