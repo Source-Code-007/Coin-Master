@@ -36,6 +36,6 @@
 
 
 /* progress transition */
-progress::-webkit-progress-value {
+.custom-delay-progress::-webkit-progress-value {
   transition: 3s width;
 }

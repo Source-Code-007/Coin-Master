@@ -1,7 +1,7 @@
 import { FaAndroid, FaApple, FaCheck, FaLinux, FaWindows } from "react-icons/fa";
 import useStoreData from "../../Hooks/useStoreData";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuSettings } from "react-icons/lu";
 import CountUp from 'react-countup';
 
@@ -11,17 +11,42 @@ const Homepage = () => {
     const [foundUser, setFoundUser] = useState(null);
     const [coinPageVisible, setIsCoinPageVisible] = useState(null);
     const [finalLoadingStatus, setFinalLoadingStatus] = useState({ status: null, progress: null })
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadingProgress, setLoadingProgress] = useState(0);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+
+
+    useEffect(() => {
+        const loadingTimeout = setTimeout(() => {
+            setIsLoading(false);
+        }, 3000);
+
+        const progressInterval = setInterval(() => {
+            setLoadingProgress((prevProgress) => {
+                const newProgress = prevProgress + (100 / 3000) * 100;
+                return newProgress >= 100 ? 100 : newProgress;
+            });
+        }, 100);
+
+        return () => {
+            clearTimeout(loadingTimeout);
+            clearInterval(progressInterval);
+        };
+    }, []);
+
+    //   console.log(loadingProgress, 37);
+
 
     const onSubmit = async form => {
         const { userName } = form
+
         setMyStoredData({ ...myStoredData, user: userName })
 
         setSearching(true);
         // Simulate searching for 3 seconds
         await new Promise(resolve => setTimeout(resolve, 4000));
         setSearching(false);
-
 
         setFoundUser(true)
 
@@ -54,13 +79,22 @@ const Homepage = () => {
     }
 
 
+    if (isLoading) {
+        return <div className="h-screen my-bg-one flex gap-5 flex-col items-center justify-center"><span className="text-[90px] md:text-[120px] text-white animate-spin">
+            <LuSettings></LuSettings>
+        </span>
+            <progress className={`progress progress-warning w-[230px] h-8 border-2 border-white`} value={loadingProgress} max="100"></progress>
+        </div>
+    }
+
+
     return (
-        <div className="min-h-screen bg-cover bg-center bg-no-repeat px-4 md:px-8 py-8" style={{ backgroundImage: `url(${'https://d266key948fg17.cloudfront.net/uploads/16369872739c763d4d2f3aa502aaeba2891b5d8448.jpg'})` }}>
+        <div className="min-h-screen bg-cover bg-center bg-no-repeat px-4 md:px-6 py-6" style={{ backgroundImage: `url(${'https://d266key948fg17.cloudfront.net/uploads/16369872739c763d4d2f3aa502aaeba2891b5d8448.jpg'})` }}>
             <figure className="">
                 <img src="https://d266key948fg17.cloudfront.net/uploads/16092706812cfcd4f149e83a5a4d47a8d9de077bb1.png" className="animate-pulse mx-auto" alt="" />
             </figure>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="w-6/6 md:w-4/6 xl:w-3/6 2xl:w-2/6 mx-auto shadow-xl shadow-yellow-500 px-4 md:px-10 py-8 border border-[wheat] rounded-[45px] relative mt-10 min-h-fit md:min-h-[580px]" style={{ boxShadow: '0 0 5px grey, 0 0 15px goldenrod, 0 0 20px goldenrod, 0 0 40px white, 0 0 70px goldenrod', background: 'radial-gradient( black,#404757)' }}>
+            <form onSubmit={handleSubmit(onSubmit)} className="w-6/6 md:w-4/6 xl:w-3/6 2xl:w-2/6 mx-auto shadow-xl shadow-yellow-500 px-4 md:px-10 py-8 border border-[wheat] rounded-[45px] relative mt-10" style={{ boxShadow: '0 0 5px grey, 0 0 15px goldenrod, 0 0 20px goldenrod, 0 0 40px white, 0 0 70px goldenrod', background: 'radial-gradient( black,#404757)' }}>
                 <figure className="absolute -top-7 left-1/2 -translate-x-1/2">
                     <img src="https://d266key948fg17.cloudfront.net/uploads/1503049344e5a4b9064a106ccb98c961c6b73fa271.png" className="h-16 w-14 animate-spin" />
                 </figure>
@@ -74,21 +108,29 @@ const Homepage = () => {
                         </div>
 
                         {/* device icons */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-3">
-                            <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center ${myStoredData.device === 'apple' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'apple' })}><FaApple></FaApple></span>
+                        <div>
+                            <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-3">
+                                <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center relative ${myStoredData.device === 'apple' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'apple' })}><FaApple></FaApple> <input type='radio' className='h-full w-full absolute left-0 top-0 opacity-0 cursor-pointer' {...register("device", { required: true })} /> </span>
 
-                            <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center ${myStoredData.device === 'android' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'android' })}><FaAndroid></FaAndroid></span>
+                                <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center relative ${myStoredData.device === 'android' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'android' })}><FaAndroid></FaAndroid> <input type='radio' className='h-full w-full absolute left-0 top-0 opacity-0 cursor-pointer' {...register("device", { required: true })} /></span>
 
-                            <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center ${myStoredData.device === 'linux' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'linux' })}><FaLinux></FaLinux></span>
+                                <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center relative ${myStoredData.device === 'linux' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'linux' })}><FaLinux></FaLinux> <input type='radio' className='h-full w-full absolute left-0 top-0 opacity-0 cursor-pointer' {...register("device", { required: true })} /></span>
 
-                            <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center ${myStoredData.device === 'windows' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'windows' })}><FaWindows></FaWindows></span>
+                                <span className={`rounded-[40px] cursor-pointer text-slate-100 text-3xl md:text-4xl p-4 md:p-8  transition duration-500 device-icon flex justify-center items-center relative ${myStoredData.device === 'windows' && 'active-box-shadow border border-[whitesmoke]'}`} style={{ background: 'radial-gradient(black,gold)', }} onClick={() => setMyStoredData({ ...myStoredData, device: 'windows' })}><FaWindows></FaWindows> <input type='radio' className='h-full w-full absolute left-0 top-0 opacity-0 cursor-pointer' {...register("device", { required: true })} /></span>
+                            </div>
 
+                            {errors.device && <div className="text-center my-1">
+                                <p className="inline-block mt-1 bg-red-500 px-2 rounded text-white font-semibold text-center">Please select your platform!</p>
+                            </div>}
                         </div>
 
                         {/* Encryption checkbox */}
-                        <div className="flex gap-2 justify-center items-center">
-                            <input type="checkbox" className="checkbox checkbox-warning" id="encryption_protection" />
-                            <label className="label-text text-slate-50 font-semibold text-lg cursor-pointer" htmlFor="encryption_protection">Encryption protection</label>
+                        <div className="text-center">
+                            <div className="flex gap-2 justify-center items-center">
+                                <input type="checkbox" className="checkbox checkbox-warning" id="encryption_protection" {...register("checkbox", { required: true })} />
+                                <label className="label-text text-slate-50 font-semibold text-lg cursor-pointer" htmlFor="encryption_protection">Encryption protection</label>
+                            </div>
+                            {errors.checkbox && <p className="inline-block my-1 bg-red-500 px-2 rounded text-white font-semibold text-center">Encryption protection required!</p>}
                         </div>
 
                         <div className="text-center">
@@ -150,7 +192,7 @@ const Homepage = () => {
                             : finalLoadingStatus.status === 'Finalizing' ? 'Finalizing' : finalLoadingStatus.status === 'Loading last step' ? 'Loading Last Step...' : ''}</p>
 
                         <div className="w-5/6 mx-auto">
-                            <progress className="progress progress-warning w-full h-8 border border-[#646464]" value={finalLoadingStatus?.progress} max="100"></progress>
+                            <progress className="progress custom-delay-progress progress-warning w-full h-8 border border-[#646464]" value={finalLoadingStatus?.progress} max="100"></progress>
                         </div>
 
                     </div>
@@ -166,16 +208,16 @@ const Homepage = () => {
                             <div className="px-5 py-2 bg-slate-50 text-slate-600 rounded-[40px] font-bold text-2xl">{myStoredData.amount}</div>
                             <p className="font-bold text-2xl">Spins</p>
                         </div>
-                        <button className="my-btn-one">Verify Now</button>
+                        <button type="button" className="my-btn-one">Verify Now</button>
 
                     </div>}
-
             </form>
 
-           {(finalLoadingStatus.progress>=45 && finalLoadingStatus.progress<80) &&   <div className="space-y-2 rounded-[40px] w-[250px] mx-auto px-6 pt-3 pb-6 text-slate-100 text-center border-2 border-slate-400 mt-20" style={{ background: 'radial-gradient( black,#404757)' }}>
+            {/* final loading step box for counter up */}
+            {(finalLoadingStatus.progress >= 45 && finalLoadingStatus.progress < 80) && <div className="space-y-2 rounded-[40px] w-[250px] mx-auto px-6 pt-3 pb-6 text-slate-100 text-center border-2 border-slate-400 mt-20 animate-pulse" style={{ background: 'radial-gradient( black,#404757)' }}>
                 <img src="https://d266key948fg17.cloudfront.net/uploads/1503049344e5a4b9064a106ccb98c961c6b73fa271.png" className=" h-16 w-20 mx-auto" />
-                <div className="px-5 py-2 bg-slate-50 text-slate-600 rounded-[40px] font-bold text-2xl"> <CountUp enableScrollSpy='true' start={myStoredData.amount}
-                    end={0} duration={'4'} /> </div>
+                <div className="px-5 py-2 bg-slate-50 text-slate-600 rounded-[40px] font-bold text-2xl"> <CountUp enableScrollSpy='true' start={0}
+                    end={myStoredData.amount} duration={'3'} /> </div>
                 <p className="font-bold text-2xl">{myStoredData.user}</p>
             </div>}
 
