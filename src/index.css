@@ -13,3 +13,23 @@
   border-radius: 40px;
   box-shadow: 0 0 5px black;
 }
+
+.my-bg-one{
+  background: radial-gradient(black ,goldenrod )
+}
+
+
+/* active class for device icon */
+.active-box-shadow{
+  box-shadow: 0 0 5px grey, 0 0 5px goldenrod, 0 0 10px goldenrod, 0 0 15px white, 0 0 30px goldenrod;
+}
+
+.device-icon:hover, .my-coin:hover{
+  box-shadow: 0 0 5px grey, 0 0 5px goldenrod, 0 0 10px goldenrod, 0 0 15px white, 0 0 30px goldenrod;
+}
+
+
+/* overwrite tailwind animate class */
+.animate-spin {
+  animation: spin 2s linear infinite;
+}
