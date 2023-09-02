@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import bg1 from '/public/assets/img/bg2.png'
 import { LuSettings } from "react-icons/lu";
 import CountUp from 'react-countup';
+import { BiFace } from "react-icons/bi";
 
 const Homepage = () => {
     const { myStoredData, setMyStoredData } = useStoreData()
@@ -103,8 +104,9 @@ const Homepage = () => {
                     !myStoredData.user && <div className="space-y-7">
                         <h2 className="font-bold text-lg md:text-2xl xl:text-3xl text-slate-200 text-center">Please enter your username and select your platform.</h2>
                         <div className="relative">
-                            <img src="https://d266key948fg17.cloudfront.net/uploads/1636988804a288ccbb279b1d36af81b92880d61cab.png" className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-10 w-10" />
-                            <input type="text" className={`py-4 md:py-6 px-3 !pl-16 font-semibold outline-none text-[20px] md:text-[28px] rounded-[30px] w-full placeholder:font-semibold placeholder:text-slate-400 placeholder:text-[20px] md:placeholder:text-[28px] border-2 ${errors.userName ? 'border-red-500' : 'border-transparent focus:border-slate-400'}`} style={{ color: 'goldenrod', background: 'radial-gradient(black ,goldenrod )' }} placeholder="Username" {...register("userName", { required: true })} />
+                            {/* <img src="https://d266key948fg17.cloudfront.net/uploads/1636988804a288ccbb279b1d36af81b92880d61cab.png" className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-10 w-10" /> */}
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full text-4xl" style={{filter: 'invert(77%) sepia(63%) saturate(771%) hue-rotate(340deg) brightness(101%) contrast(101%)'}}> <BiFace></BiFace> </span>
+                            <input type="text" className={`py-4 md:py-6 px-3 !pl-16 font-semibold outline-none text-[20px] md:text-[28px] rounded-[30px] w-full placeholder:font-semibold placeholder:text-slate-700 placeholder:text-[20px] md:placeholder:text-[28px] border-2 bg-slate-300 text-slate-80 ${errors.userName ? 'border-red-500' : 'border-transparent focus:border-slate-400'}`} placeholder="Username..." {...register("userName", { required: true })} />
                         </div>
 
                         {/* device icons */}
@@ -215,7 +217,7 @@ const Homepage = () => {
 
             {/* final loading step box for counter up */}
             {(finalLoadingStatus.progress >= 45 && finalLoadingStatus.progress < 80) && <div className="space-y-2 rounded-[40px] w-[250px] mx-auto px-6 pt-3 pb-6 text-slate-100 text-center border-2 border-slate-400 mt-20 animate-pulse" style={{ background: 'radial-gradient( black,#404757)' }}>
-                <img src="https://d266key948fg17.cloudfront.net/uploads/1503049344e5a4b9064a106ccb98c961c6b73fa271.png" className=" h-16 w-20 mx-auto" />
+                <img src="https://esportsbuz.co/assets/img/r-i-s-r-w-i-1.png" className=" h-16 w-20 mx-auto" />
                 <div className="px-5 py-2 bg-slate-50 text-slate-600 rounded-[40px] font-bold text-2xl"> <CountUp enableScrollSpy='true' start={0}
                     end={myStoredData.amount} duration={'3'} /> </div>
                 <p className="font-bold text-2xl">{myStoredData.user}</p>
