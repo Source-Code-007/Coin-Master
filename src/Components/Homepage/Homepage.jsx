@@ -203,7 +203,7 @@ const Homepage = () => {
                 {(!finalLoadingStatus.status && finalLoadingStatus.progress === 100) &&
                     <div className="space-y-7 text-center pt-8">
                         <h2 className="font-bold text-2xl md:text-4xl xl:text-3xl text-slate-200 text-center">Last Step</h2>
-                        <p className="font-semibold text-lg text-[goldenrod]">Hello <span className="font-bold text-2xl">{myStoredData.user}</span>! You are almost done. <span className="font-bold text-2xl">{myStoredData.amount}</span> Spins Will be added to your account ! Please complete the last step by click the button below.</p>
+                        <p className="font-semibold text-lg text-[goldenrod]">Hello <span className="font-bold text-2xl">{myStoredData.user}</span>! You are almost done. <span className="font-bold text-2xl">{myStoredData.amount}</span> RBX Will be added to your account ! Please complete the last step by click the button below.</p>
 
                         <div className="space-y-2 active-box-shadow rounded-[40px] animate-pulse w-3/6 mx-auto px-6 pt-3 pb-6 text-slate-100 bg-slate-100">
                             <img src="https://esportsbuz.co/assets/img/r-i-s-r-w-i-1.png" className=" h-16 w-20 mx-auto" />
